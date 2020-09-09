@@ -1,0 +1,6 @@
+	test{
+		compatible = "zynq7010,dts-test";
+		my_string = "test string";
+		reg = <0x11112222 0x1000>;
+		gpios = <&gpio0 10 0>;
+	};
