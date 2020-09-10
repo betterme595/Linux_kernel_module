@@ -9,5 +9,6 @@ all:
 	make -C $(KERNEL_PATH) M=$(shell pwd) ARCH=$(ARCH) CROSS_COMPILE=$(CROSS_COMPILE) modules
 
 clean:
-	rm  *.symvers *.order *.ko *.o *.mod*
+	rm .*  *mod.c *.symvers *.order *.ko *.o* 
+	rm -r .tmp_versions
 #	make -C $(KERNEL_PATH) COMPILE_CORESS=$(GCC)

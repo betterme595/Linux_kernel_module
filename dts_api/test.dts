@@ -1,6 +1,39 @@
+/ {
+
 	test{
 		compatible = "zynq7010,dts-test";
-		my_string = "test string";
-		reg = <0x11112222 0x1000>;
+		
+		/*mem资源，使用 platform_get_resource(pdev, IORESOURCE_MEM, 0) 获取*/
+		//#address-cells = <1>;			//指定reg地址长度
+		//#size-cells = <1>;			//指定size长度
+		//reg = <0x11112222 0x1000>;	
+		
+		#address-cells = <2>;
+		#size-cells = <2>;
+		reg = <0x11112222 0x1000 
+			   0x33334444 0x2000>;		//第一个资源：platform_get_resource(pdev, IORESOURCE_MEM, 0)，第二个资源：platform_get_resource(pdev, IORESOURCE_MEM, 1)
+
+			   
+		/*interrupt资源，使用 platform_get_resource(pdev, IORESOURCE_IRQ, 0) 获取*/
+		interrupts = <0 23 4>;			//interrupts需要看interrupt-parent中的 #interrupt-cells ，如下 intc 所示
+		interrupt-parent = <&intc>;		//如果不是interrupt-controller; 那么一定需要指定 interrupt-parent
+
 		gpios = <&gpio0 10 0>;
-	};
+		
+		/*自定义*/
+		my_string = "test string";					//字符串,	of_property_read_string
+		my_num = <5>;								//整形	,	of_property_read_u32
+		my_array_u8  = [11 22 33 44 55];			//u8数组,	of_property_read_u8_array	
+		my_array_u16 = [1111 2222 3333 4444 5555];	//u16数组,	of_property_read_u16_array				
+	};	
+};
+
+/*
+		intc: interrupt-controller@f8f01000 {
+			compatible = "arm,cortex-a9-gic";
+			#interrupt-cells = <3>;
+			interrupt-controller;
+			reg = <0xF8F01000 0x1000>,
+			      <0xF8F00100 0x100>;
+		};	
+*/
