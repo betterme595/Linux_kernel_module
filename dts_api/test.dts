@@ -24,7 +24,17 @@
 		my_string = "test string";					//字符串,	of_property_read_string
 		my_num = <5>;								//整形	,	of_property_read_u32
 		my_array_u8  = [11 22 33 44 55];			//u8数组,	of_property_read_u8_array	
-		my_array_u16 = [1111 2222 3333 4444 5555];	//u16数组,	of_property_read_u16_array				
+		my_array_u16 = [1111 2222 3333 4444 5555];	//u16数组,	of_property_read_u16_array		
+
+		/*子节点, 使用 device_get_child_node_count 获取总的子节点个数，本例子节点个数为2*/
+		c_test@1 {
+			m_string = "test@1";		//字符串，使用fwnode_property_read_string获取
+		};
+		
+		/*子节点*/
+		c_test@2 {
+			m_string = "test@2";
+		};
 	};	
 };
 

@@ -21,11 +21,18 @@ static int dts_probe(struct platform_device *pdev)
 	struct resource *io, *irq;
 	struct device *dev = &pdev->dev;
 	struct device_node *node = dev->of_node;		//设备树节点
+	/*自定义节点变量*/
 	const char *my_string;
 	u32 my_num = -1;
 	u8 my_array_u8[5] = {0};
 	u16 my_array_u16[5] = {0};
 	int temp = 0;
+
+	/*子节点变量*/
+	struct fwnode_handle *child;
+	int child_node_count = -1;
+	const char *child_string;
+	
 	//int ret = -1;
 	
 	printk("[%s]-[%d] start\n",__func__,__LINE__);
@@ -88,8 +95,6 @@ static int dts_probe(struct platform_device *pdev)
 	}else{
 		printk("[%s]-[%d] Not found 'my_array_u8' resource\n",__func__,__LINE__);
 	}
-	printk("[%s]-[%d] end\n",__func__,__LINE__);
-
 
 	if (of_property_read_u16_array(node, "my_array_u16", my_array_u16, my_num) == 0 ){
 		temp = my_num;
@@ -100,7 +105,18 @@ static int dts_probe(struct platform_device *pdev)
 		printk("[%s]-[%d] Not found 'my_array_u16' resource\n",__func__,__LINE__);
 	}
 
-			
+	/*#######################获取子节点个数########################################*/		
+	child_node_count = device_get_child_node_count(dev);
+	printk("child_node_count:[%d] \n", child_node_count);
+	/*遍历子节点数据*/
+	device_for_each_child_node(dev, child) {
+		if(fwnode_property_read_string(child, "m_string", &child_string) ==0 ){
+			printk("m_string[%s]\n", child_string);
+		}else{
+			printk("[%s]-[%d] Not found 'my_array_u16' resource\n",__func__,__LINE__);
+		}		
+	}
+	
 	printk("[%s]-[%d] end\n",__func__,__LINE__);
 
 
